@@ -1,7 +1,35 @@
-// Game board widget.
-//
-// This reusable widget will draw the 3 by 3 Tic-Tac-Toe board. It should receive
-// board data from GameScreen and notify GameScreen when a cell is tapped.
-//
-// It should focus on layout using Column, Row, Expanded, SizedBox, and
-// GameCell. It should not check winners or switch turns.
+import 'package:flutter/material.dart';
+import '../models/player.dart';
+import 'game_cell.dart';
+
+class GameBoard extends StatelessWidget {
+  const GameBoard({
+    super.key,
+    required this.board,
+    required this.onCellTap,
+  });
+
+  final List<Player?> board;
+  final Function(int index) onCellTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1,
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+        ),
+        itemCount: 9,
+        itemBuilder: (context, index) {
+          return GameCell(
+            player: board[index],
+            onTap: () => onCellTap(index),
+          );
+        },
+      ),
+    );
+  }
+}
